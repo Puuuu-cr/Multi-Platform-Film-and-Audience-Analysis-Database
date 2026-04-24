@@ -1,8 +1,11 @@
 import random
 
 # ==========================================
-# 1. Your Real Movie IDs (176 in total)
+# 1. Real Movie IDs (176 in total)
 # ==========================================
+
+# Here we just choose first 176 movie_ids to generate comments
+
 REAL_MOVIE_IDS = [
     83533, 1613798, 687163, 1470130, 1290821, 1327819, 1084577, 840464, 1290417, 1304313, 
     1171145, 1010755, 1641319, 1297842, 1311031, 502356, 1480387, 1159559, 1084242, 848116, 
@@ -35,7 +38,7 @@ reviews_data = [] # Store generated reviews (user_id, movie_id, rating)
 # 2. Generate Rating Logic (0-10 scale, no review text)
 # ==========================================
 
-# --- Scenario A: Veteran Critic ---
+# --- Veteran Critic ---
 # Randomly select 105 movies from the real IDs for the veteran to watch (satisfies COUNT >= 100)
 veteran_watched = random.sample(REAL_MOVIE_IDS, 105)
 if HIDDEN_GEM_ID not in veteran_watched:
@@ -48,7 +51,7 @@ for m_id in veteran_watched:
         rating = round(random.uniform(5.0, 8.5), 1) 
     reviews_data.append((VETERAN_USER_ID, m_id, rating))
 
-# --- Scenarios B & C: Casual Users ---
+# --- Casual Users ---
 for user_id in range(2, TOTAL_USERS + 1):
     # [Create extremely polarizing movie]: All casual users watched it, half gave 0, half gave 10
     polarizing_rating = 0.0 if user_id % 2 == 0 else 10.0 
