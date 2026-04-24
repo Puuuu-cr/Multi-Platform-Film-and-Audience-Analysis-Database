@@ -337,13 +337,12 @@ def decade_genre_champions():
                         st.rerun()
 
 # ==========================================
-# 9. Page: Veteran's Choice (Optimized with View)
+# 9. Page: Veteran's Choice (Optimized with View & LIMIT)
 # ==========================================
 def veteran_hidden_gems():
     st.header("💎 Veteran's Choice")
     st.write("Discover low-profile movies highly rated by our most active reviewers.")
 
-    # 🌟 OPTIMIZATION: Using v_movie_full_details removes the need to manually join `movies` AND `movie_stats`
     query = """
     WITH VeteranUsers AS (
         SELECT user_id FROM user_reviews GROUP BY user_id HAVING COUNT(movie_id) >= 100
@@ -357,8 +356,9 @@ def veteran_hidden_gems():
     SELECT v.movie_id, v.title, vr.veteran_avg_rating, v.local_total_reviews, v.poster_url, v.vote_average
     FROM VeteranRatings vr
     JOIN v_movie_full_details v ON vr.movie_id = v.movie_id
-    WHERE v.local_total_reviews < 50 AND vr.veteran_avg_rating >= 4.5
-    ORDER BY vr.veteran_avg_rating DESC;
+    WHERE v.local_total_reviews < 50 AND vr.veteran_avg_rating >= 9
+    ORDER BY vr.veteran_avg_rating DESC
+    LIMIT 10; 
     """
     gems = run_query(query, fetch=True)
     if gems:
